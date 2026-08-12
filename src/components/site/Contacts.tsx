@@ -4,13 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import PhoneInput, { isPhoneComplete } from '@/components/site/PhoneInput';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import ServicePicker from '@/components/site/ServicePicker';
 import { useToast } from '@/hooks/use-toast';
 import SectionHeading from './SectionHeading';
 
@@ -94,7 +88,7 @@ const Contacts = () => {
       <div className="pointer-events-none absolute -left-24 bottom-0 h-[400px] w-[400px] rounded-full bg-primary/10 blur-[130px]" />
       <div className="container relative px-5 sm:px-8">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-8 sm:p-10">
+          <div className="rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-5 sm:p-10">
             <SectionHeading
               eyebrow="Запись"
               title={
@@ -107,8 +101,8 @@ const Contacts = () => {
               description="Мастер перезвонит в течение 15 минут, задаст пару вопросов по машине и назовёт точную стоимость. Диагностика в боксе — бесплатно."
             />
 
-            <form onSubmit={onSubmit} className="mt-10 space-y-5" noValidate>
-              <div className="grid gap-5 sm:grid-cols-2">
+            <form onSubmit={onSubmit} className="mt-7 space-y-4 sm:mt-10 sm:space-y-5" noValidate>
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
                 <div>
                   <label className="mb-2 block text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                     Имя
@@ -143,7 +137,7 @@ const Contacts = () => {
                 </div>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
                 <div>
                   <label className="mb-2 block text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                     Автомобиль
@@ -164,18 +158,11 @@ const Contacts = () => {
                   <label className="mb-2 block text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                     Услуга
                   </label>
-                  <Select value={service} onValueChange={setService}>
-                    <SelectTrigger className="h-12 rounded-lg border-border bg-white">
-                      <SelectValue placeholder="Выберите услугу" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {SERVICES.map((s) => (
-                        <SelectItem key={s} value={s}>
-                          {s}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <ServicePicker
+                    value={service}
+                    onChange={setService}
+                    options={SERVICES}
+                  />
                   {errors.service && (
                     <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
                       <Icon name="TriangleAlert" size={13} /> {errors.service}
