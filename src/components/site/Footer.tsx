@@ -11,6 +11,7 @@ const LINKS = [
   { id: 'calc', label: 'Расчёт выгоды' },
   { id: 'process', label: 'Как проходит' },
   { id: 'equipment', label: 'Оборудование' },
+  { id: 'works', label: 'Наши работы' },
   { id: 'prices', label: 'Цены' },
   { id: 'faq', label: 'Вопросы' },
 ];
