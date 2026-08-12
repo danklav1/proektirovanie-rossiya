@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import timedelta
 
 import psycopg2
 
@@ -97,7 +98,7 @@ def handler(event: dict, context) -> dict:
         where = ('WHERE ' + ' AND '.join(conds)) if conds else ''
 
         sql = (
-            "SELECT id, to_char(created_at AT TIME ZONE 'UTC' + interval '3 hours', 'DD.MM.YYYY HH24:MI') AS created, "
+            "SELECT id, created_at, "
             "name, phone, COALESCE(company, '') AS company, COALESCE(email, '') AS email, "
             "COALESCE(car, '') AS car, COALESCE(service, '') AS service, COALESCE(comment, '') AS comment, "
             "mail_sent, status "
@@ -107,7 +108,16 @@ def handler(event: dict, context) -> dict:
         with conn.cursor() as cur:
             cur.execute(sql)
             cols = [d[0] for d in cur.description]
-            rows = [dict(zip(cols, r)) for r in cur.fetchall()]
+            rows = []
+            for r in cur.fetchall():
+                row = dict(zip(cols, r))
+                created = row.pop('created_at', None)
+                if created is not None:
+                    moscow = created + timedelta(hours=3)
+                    row['created'] = moscow.strftime('%d.%m.%Y %H:%M')
+                else:
+                    row['created'] = ''
+                rows.append(row)
 
             cur.execute(f"SELECT status, COUNT(*) FROM {schema}.leads GROUP BY status")
             counts = {r[0]: r[1] for r in cur.fetchall()}
