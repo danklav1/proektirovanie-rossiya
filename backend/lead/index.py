@@ -4,6 +4,8 @@ import smtplib
 from email.message import EmailMessage
 from email.utils import formataddr
 
+import psycopg2
+
 SMTP_HOST = 'smtp.yandex.ru'
 SMTP_PORT = 465
 MAIL_FROM = 'ed123ed@yandex.ru'
@@ -15,8 +17,67 @@ CORS = {
 }
 
 
+def esc(value: str) -> str:
+    return "'" + (value or '').replace("'", "''") + "'"
+
+
+def save_lead(fields: dict, mail_sent: bool) -> None:
+    dsn = os.environ.get('DATABASE_URL')
+    if not dsn:
+        return
+    schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
+    cols = ['name', 'phone', 'email', 'company', 'fleet', 'car', 'service', 'comment']
+    values = ', '.join(esc(fields.get(c, '')) for c in cols)
+    sql = (
+        f"INSERT INTO {schema}.leads (name, phone, email, company, fleet, car, service, comment, mail_sent) "
+        f"VALUES ({values}, {'TRUE' if mail_sent else 'FALSE'})"
+    )
+    conn = psycopg2.connect(dsn)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def send_mail(fields: dict) -> None:
+    password = os.environ.get('SMTP_PASSWORD', '').strip()
+    if not password:
+        raise RuntimeError('SMTP_PASSWORD is not set')
+
+    is_business = bool(fields.get('company') or fields.get('fleet'))
+    title = 'Заявка на КП для автопарка' if is_business else 'Новая заявка с сайта Газ-Он'
+
+    lines = [title, '']
+    if fields.get('company'):
+        lines.append(f"Компания: {fields['company']}")
+    lines.append(f"Имя: {fields['name']}")
+    lines.append(f"Телефон: {fields['phone']}")
+    if fields.get('email'):
+        lines.append(f"E-mail: {fields['email']}")
+    if fields.get('fleet'):
+        lines.append(f"Размер парка: {fields['fleet']}")
+    lines.append(f"Автомобиль: {fields.get('car') or '—'}")
+    lines.append(f"Услуга: {fields.get('service') or '—'}")
+    lines.append(f"Комментарий: {fields.get('comment') or '—'}")
+
+    prefix = 'КП автопарк' if is_business else 'Заявка с сайта'
+    msg = EmailMessage()
+    msg['Subject'] = f"{prefix}: {fields.get('company') or fields['name']}, {fields['phone']}"
+    msg['From'] = formataddr(('Сайт Газ-Он', MAIL_FROM))
+    msg['To'] = MAIL_TO
+    if fields.get('email'):
+        msg['Reply-To'] = fields['email']
+    msg.set_content('\n'.join(lines))
+
+    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=20) as smtp:
+        smtp.login(MAIL_FROM, password)
+        smtp.send_message(msg)
+
+
 def handler(event: dict, context) -> dict:
-    """Принимает заявку с форм сайта Газ-Он и отправляет её на почту компании ed123ed@yandex.ru."""
+    """Принимает заявку с форм сайта Газ-Он: сохраняет её в базу и отправляет на почту компании."""
     method = event.get('httpMethod', 'GET')
 
     if method == 'OPTIONS':
@@ -39,81 +100,43 @@ def handler(event: dict, context) -> dict:
         }
 
     body = json.loads(event.get('body') or '{}')
-    name = (body.get('name') or '').strip()
-    phone = (body.get('phone') or '').strip()
-    car = (body.get('car') or '').strip()
-    service = (body.get('service') or '').strip()
-    comment = (body.get('comment') or '').strip()
-    company = (body.get('company') or '').strip()
-    email = (body.get('email') or '').strip()
-    fleet = (body.get('fleet') or '').strip()
+    fields = {
+        k: (body.get(k) or '').strip()
+        for k in ('name', 'phone', 'email', 'company', 'fleet', 'car', 'service', 'comment')
+    }
 
-    if not name or not phone:
+    if not fields['name'] or not fields['phone']:
         return {
             'statusCode': 400,
             'headers': CORS,
             'body': json.dumps({'success': False, 'error': 'Укажите имя и телефон'}, ensure_ascii=False),
         }
 
-    password = os.environ.get('SMTP_PASSWORD', '').strip()
-    if not password:
-        print('SMTP_PASSWORD is not set')
-        return {
-            'statusCode': 500,
-            'headers': CORS,
-            'body': json.dumps({'success': False, 'error': 'Почта не настроена'}, ensure_ascii=False),
-        }
-
-    is_business = bool(company or fleet)
-    title = 'Заявка на КП для автопарка' if is_business else 'Новая заявка с сайта Газ-Он'
-
-    lines = [title, '']
-    if company:
-        lines.append(f'Компания: {company}')
-    lines.append(f'Имя: {name}')
-    lines.append(f'Телефон: {phone}')
-    if email:
-        lines.append(f'E-mail: {email}')
-    if fleet:
-        lines.append(f'Размер парка: {fleet}')
-    lines.append(f'Автомобиль: {car or "—"}')
-    lines.append(f'Услуга: {service or "—"}')
-    lines.append(f'Комментарий: {comment or "—"}')
-
-    subject_prefix = 'КП автопарк' if is_business else 'Заявка с сайта'
-    msg = EmailMessage()
-    msg['Subject'] = f'{subject_prefix}: {company or name}, {phone}'
-    msg['From'] = formataddr(('Сайт Газ-Он', MAIL_FROM))
-    msg['To'] = MAIL_TO
-    if email:
-        msg['Reply-To'] = email
-    msg.set_content('\n'.join(lines))
+    mail_sent = False
+    mail_error = ''
+    try:
+        send_mail(fields)
+        mail_sent = True
+    except Exception as exc:
+        mail_error = f'{type(exc).__name__}: {exc}'
+        print(f'Mail send failed: {mail_error}')
 
     try:
-        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=20) as smtp:
-            smtp.login(MAIL_FROM, password)
-            smtp.send_message(msg)
-    except smtplib.SMTPAuthenticationError as exc:
-        print(f'SMTP auth failed: {exc}')
-        return {
-            'statusCode': 500,
-            'headers': CORS,
-            'body': json.dumps(
-                {'success': False, 'error': 'Почта отклонила пароль. Нужен пароль приложения Яндекса.'},
-                ensure_ascii=False,
-            ),
-        }
+        save_lead(fields, mail_sent)
     except Exception as exc:
-        print(f'SMTP send failed: {type(exc).__name__}: {exc}')
-        return {
-            'statusCode': 500,
-            'headers': CORS,
-            'body': json.dumps({'success': False, 'error': 'Не удалось отправить письмо'}, ensure_ascii=False),
-        }
+        print(f'DB save failed: {type(exc).__name__}: {exc}')
+        if not mail_sent:
+            return {
+                'statusCode': 500,
+                'headers': CORS,
+                'body': json.dumps(
+                    {'success': False, 'error': 'Не удалось принять заявку'}, ensure_ascii=False
+                ),
+            }
 
-    print(f'Lead sent to {MAIL_TO}: {company or name} / {phone}')
+    print(f"Lead accepted: {fields.get('company') or fields['name']} / {fields['phone']}, mail_sent={mail_sent}")
     return {
         'statusCode': 200,
         'headers': CORS,
-        'body': json.dumps({'success': True}, ensure_ascii=False),
+        'body': json.dumps({'success': True, 'mailSent': mail_sent}, ensure_ascii=False),
     }
