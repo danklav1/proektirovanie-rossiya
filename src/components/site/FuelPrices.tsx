@@ -9,6 +9,7 @@ import {
   YAxis,
 } from 'recharts';
 import Icon from '@/components/ui/icon';
+import { Button } from '@/components/ui/button';
 import SectionHeading from './SectionHeading';
 
 const FUELS = [
@@ -56,6 +57,13 @@ const TABS = [
   { id: 'diesel', label: 'Дизель' },
   { id: 'lpg', label: 'Пропан' },
 ];
+
+const scrollToCalc = () => {
+  const el = document.getElementById('calc');
+  if (el) {
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: 'smooth' });
+  }
+};
 
 const money = (v: number) => `${Math.round(v).toLocaleString('ru-RU')} ₽`;
 
@@ -258,6 +266,21 @@ const FuelPrices = () => {
                 разница в цене литра бензина и газа сегодня
               </div>
             </div>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-xl bg-secondary p-6 sm:p-7">
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+              Хотите узнать, сколько именно сэкономит ваша машина? Подставьте свой пробег и расход —
+              расчёт займёт полминуты.
+            </p>
+            <Button
+              size="lg"
+              onClick={scrollToCalc}
+              className="h-14 rounded-lg px-8 font-display text-base tracking-normal"
+            >
+              <Icon name="Calculator" size={18} className="mr-2" />
+              Рассчитать мою экономию
+            </Button>
           </div>
         </div>
 
