@@ -8,6 +8,7 @@ import {
   StatusPicker,
   type LeadStatusValue,
 } from '@/components/leads/LeadStatus';
+import BookingsTab from '@/components/leads/BookingsTab';
 
 const LEADS_URL = 'https://functions.poehali.dev/363e7f9a-b9be-4085-a362-c9b8bdf14c5c';
 const STORE_KEY = 'gazon_admin_pwd';
@@ -39,6 +40,7 @@ const Leads = () => {
   const [filter, setFilter] = useState<'all' | LeadStatusValue>('all');
   const [loading, setLoading] = useState(false);
   const [savingId, setSavingId] = useState<number | null>(null);
+  const [tab, setTab] = useState<'leads' | 'bookings'>('leads');
 
   const load = async (pwd: string, phone = '', status: 'all' | LeadStatusValue = 'all') => {
     setLoading(true);
@@ -174,14 +176,45 @@ const Leads = () => {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl sm:text-3xl">Заявки с сайта</h1>
-            <p className="text-sm text-muted-foreground">Показано: {leads.length}</p>
+            <h1 className="font-display text-2xl sm:text-3xl">
+              {tab === 'leads' ? 'Заявки с сайта' : 'Онлайн-записи'}
+            </h1>
+            {tab === 'leads' && (
+              <p className="text-sm text-muted-foreground">Показано: {leads.length}</p>
+            )}
           </div>
           <Button variant="outline" onClick={logout} className="rounded-lg">
             <Icon name="LogOut" size={16} className="mr-2" /> Выйти
           </Button>
         </div>
 
+        <div className="mb-5 inline-flex rounded-xl border border-border bg-white p-1">
+          {(
+            [
+              { value: 'leads', label: 'Заявки', icon: 'Inbox' },
+              { value: 'bookings', label: 'Записи', icon: 'CalendarDays' },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.value}
+              type="button"
+              onClick={() => setTab(t.value)}
+              className={`flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors ${
+                tab === t.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-primary'
+              }`}
+            >
+              <Icon name={t.icon} size={16} />
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {tab === 'bookings' && <BookingsTab password={password} />}
+
+        {tab === 'leads' && (
+        <>
         <div className="mb-5 flex flex-wrap gap-2">
           {tabs.map((t) => {
             const active = filter === t.value;
@@ -330,6 +363,8 @@ const Leads = () => {
             </div>
           ))}
         </div>
+        </>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import psycopg2
 
@@ -10,6 +10,12 @@ CORS = {
 }
 
 STATUSES = ('new', 'in_work', 'booked', 'declined')
+
+WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+
+
+def today_msk():
+    return (datetime.utcnow() + timedelta(hours=3)).date()
 
 
 def esc(value: str) -> str:
@@ -60,6 +66,27 @@ def handler(event: dict, context) -> dict:
     try:
         if method == 'POST':
             body = json.loads(event.get('body') or '{}')
+
+            if body.get('kind') == 'booking':
+                booking_id = body.get('id')
+                status = (body.get('status') or '').strip()
+                if not isinstance(booking_id, int) or status not in ('new', 'declined'):
+                    return {
+                        'statusCode': 400,
+                        'headers': CORS,
+                        'body': json.dumps({'error': 'Некорректные данные'}, ensure_ascii=False),
+                    }
+                with conn.cursor() as cur:
+                    cur.execute(
+                        f"UPDATE {schema}.bookings SET status = {esc(status)} WHERE id = {booking_id}"
+                    )
+                conn.commit()
+                return {
+                    'statusCode': 200,
+                    'headers': CORS,
+                    'body': json.dumps({'success': True, 'id': booking_id, 'status': status}),
+                }
+
             lead_id = body.get('id')
             status = (body.get('status') or '').strip()
 
@@ -82,6 +109,43 @@ def handler(event: dict, context) -> dict:
             }
 
         params = event.get('queryStringParameters') or {}
+
+        if (params.get('kind') or '') == 'bookings':
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT id, slot_date, slot_time, city, address, service, name, phone, "
+                    "COALESCE(comment, '') AS comment, status, created_at "
+                    f"FROM {schema}.bookings ORDER BY slot_date DESC, slot_time DESC LIMIT 500"
+                )
+                cols = [d[0] for d in cur.description]
+                items = []
+                for r in cur.fetchall():
+                    row = dict(zip(cols, r))
+                    slot = row.pop('slot_date')
+                    row['date'] = slot.isoformat()
+                    row['dateHuman'] = f"{slot.day:02d}.{slot.month:02d}.{slot.year}"
+                    row['weekday'] = WEEKDAYS[slot.weekday()]
+                    row['past'] = slot < today_msk()
+                    created = row.pop('created_at', None)
+                    row['created'] = (
+                        (created + timedelta(hours=3)).strftime('%d.%m.%Y %H:%M') if created else ''
+                    )
+                    items.append(row)
+
+                cur.execute(
+                    f"SELECT COUNT(*) FROM {schema}.bookings "
+                    f"WHERE status <> 'declined' AND slot_date >= DATE {esc(today_msk().isoformat())}"
+                )
+                upcoming = cur.fetchone()[0]
+
+            return {
+                'statusCode': 200,
+                'headers': CORS,
+                'body': json.dumps(
+                    {'bookings': items, 'upcoming': upcoming}, ensure_ascii=False, default=str
+                ),
+            }
+
         search = ''.join(ch for ch in (params.get('phone') or '') if ch.isdigit())
         if search.startswith('8') or search.startswith('7'):
             search = search[1:]
