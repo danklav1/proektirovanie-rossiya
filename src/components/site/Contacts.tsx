@@ -14,11 +14,14 @@ import { useToast } from '@/hooks/use-toast';
 import SectionHeading from './SectionHeading';
 
 const CITIES = [
+  { city: 'Курган', address: 'ул. Омская, 167/1 ст2', hours: 'Пн–Сб, 10:00–20:00' },
   { city: 'Екатеринбург', address: 'ул. Монтёрская, 8, бокс 3', hours: 'Пн–Сб, 9:00–20:00' },
   { city: 'Казань', address: 'ул. Тэцевская, 14а', hours: 'Пн–Сб, 9:00–20:00' },
   { city: 'Нижний Новгород', address: 'ш. Жиркомбината, 21', hours: 'Ежедневно, 8:00–21:00' },
   { city: 'Уфа', address: 'ул. Трамвайная, 4к2', hours: 'Пн–Сб, 9:00–19:00' },
 ];
+
+const LEAD_URL = 'https://functions.poehali.dev/bb046092-825c-4bb8-b1c4-59ffbca6e687';
 
 const SERVICES = [
   'Установка ГБО под ключ',
@@ -49,12 +52,18 @@ const Contacts = () => {
     return Object.keys(e).length === 0;
   };
 
-  const onSubmit = (ev: React.FormEvent) => {
+  const onSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
     setSending(true);
-    window.setTimeout(() => {
-      setSending(false);
+    try {
+      const res = await fetch(LEAD_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, car, service, comment }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'Ошибка отправки');
       toast({
         title: 'Заявка принята',
         description: `${name}, мастер перезвонит на ${phone} в течение 15 минут и подберёт комплект.`,
@@ -65,7 +74,15 @@ const Contacts = () => {
       setService('');
       setComment('');
       setErrors({});
-    }, 700);
+    } catch {
+      toast({
+        variant: 'destructive',
+        title: 'Не удалось отправить заявку',
+        description: 'Позвоните нам по телефону 8 (908) 004-80-80 — примем заявку по телефону.',
+      });
+    } finally {
+      setSending(false);
+    }
   };
 
   const formatPhone = (v: string) => {
@@ -258,10 +275,10 @@ const Contacts = () => {
                   <Icon name="MessageCircle" size={16} /> WhatsApp
                 </a>
                 <a
-                  href="mailto:zayavka@gaz-on.ru"
+                  href="mailto:gazon.45@mail.ru"
                   className="flex items-center gap-2 rounded-lg bg-white/15 px-4 py-2.5 text-sm transition-colors hover:bg-white hover:text-primary"
                 >
-                  <Icon name="Mail" size={16} /> zayavka@gaz-on.ru
+                  <Icon name="Mail" size={16} /> gazon.45@mail.ru
                 </a>
               </div>
             </div>

@@ -1,0 +1,19 @@
+{
+  "tests": [
+    {
+      "name": "CORS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Валидация пустой заявки",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "", "phone": ""},
+      "expectedStatus": 400,
+      "expectedBody": {"success": false},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

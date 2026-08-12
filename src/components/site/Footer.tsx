@@ -63,10 +63,10 @@ const Footer = () => (
             8 (908) 004-80-80
           </a>
           <a
-            href="mailto:zayavka@gaz-on.ru"
+            href="mailto:gazon.45@mail.ru"
             className="mt-3 block text-sm text-white/70 transition-colors hover:text-white"
           >
-            zayavka@gaz-on.ru
+            gazon.45@mail.ru
           </a>
           <div className="mt-3 text-sm text-white/70">Ежедневно, 8:00–21:00 МСК</div>
           <button
