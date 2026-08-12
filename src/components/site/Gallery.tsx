@@ -10,6 +10,8 @@ const WORKS = [
     title: 'Редуктор и рампа форсунок',
     car: 'Kia Rio 1.6, BRC Sequent',
     text: 'Редуктор закреплён на штатных точках, магистрали убраны в защитную гофру, проводка проложена вдоль заводской косы. Доступ к маслу и фильтрам не перекрыт.',
+    price: '39 900 ₽',
+    term: '6 часов',
   },
   {
     img: 'https://cdn.poehali.dev/projects/d64e9949-6407-4a4a-9a06-e202827e2a46/files/886c487d-92db-4b71-8ff3-ef5aa83dc0d0.jpg',
@@ -17,6 +19,8 @@ const WORKS = [
     title: 'Тороидальный баллон в нише запаски',
     car: 'Skoda Octavia, баллон 54 л',
     text: 'Баллон встал в нишу запасного колеса — пол багажника остаётся ровным, объём не теряется. Вентиляционная коробка выведена под днище по нормативу.',
+    price: '54 900 ₽',
+    term: '1 день',
   },
   {
     img: 'https://cdn.poehali.dev/projects/d64e9949-6407-4a4a-9a06-e202827e2a46/files/916821ed-1b8b-4e72-8246-475499f766dd.jpg',
@@ -24,6 +28,8 @@ const WORKS = [
     title: 'Цилиндрический баллон в фургоне',
     car: 'ГАЗель Next, баллон 100 л',
     text: 'Крепление на усиленных кронштейнах к силовым элементам кузова. Грузовое пространство сохранено, баллон закрыт защитой от груза.',
+    price: '68 400 ₽',
+    term: '2 дня',
   },
   {
     img: 'https://cdn.poehali.dev/projects/d64e9949-6407-4a4a-9a06-e202827e2a46/files/84e09a9d-427a-4048-a5ae-9c0e8a5aa12c.jpg',
@@ -31,6 +37,8 @@ const WORKS = [
     title: 'ВЗУ под лючком бензобака',
     car: 'Toyota Camry, скрытый монтаж',
     text: 'Выносное заправочное устройство ставим под лючок — снаружи машина выглядит стоково. Заправка на любой газовой АЗС без переходников.',
+    price: '89 900 ₽',
+    term: '1 день',
   },
 ];
 
@@ -126,6 +134,25 @@ const Gallery = () => {
               {w.car}
             </div>
             <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{w.text}</p>
+
+            <div className="mt-7 grid grid-cols-2 gap-4">
+              <div className="rounded-xl bg-secondary p-5">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                  <Icon name="Wallet" size={14} /> Стоимость
+                </div>
+                <div className="mt-2.5 font-display text-2xl leading-none text-primary">
+                  {w.price}
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground">под ключ, с документами</div>
+              </div>
+              <div className="rounded-xl bg-secondary p-5">
+                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                  <Icon name="Clock" size={14} /> Срок работ
+                </div>
+                <div className="mt-2.5 font-display text-2xl leading-none text-primary">{w.term}</div>
+                <div className="mt-2 text-xs text-muted-foreground">машина в боксе</div>
+              </div>
+            </div>
 
             <div className="mt-8 space-y-3 border-t border-border pt-6">
               {WORKS.map((item, idx) => (
