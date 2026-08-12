@@ -7,9 +7,18 @@
       "expectedStatus": 200
     },
     {
-      "name": "Без пароля доступ закрыт",
+      "name": "Без пароля список закрыт",
       "method": "GET",
       "path": "/",
+      "expectedStatus": 401,
+      "expectedBody": {"error": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Без пароля смена статуса закрыта",
+      "method": "POST",
+      "path": "/",
+      "body": {"id": 1, "status": "in_work"},
       "expectedStatus": 401,
       "expectedBody": {"error": "string"},
       "bodyMatcher": "partial"

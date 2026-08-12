@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import {
+  STATUS_LIST,
+  StatusPicker,
+  type LeadStatusValue,
+} from '@/components/leads/LeadStatus';
 
 const LEADS_URL = 'https://functions.poehali.dev/363e7f9a-b9be-4085-a362-c9b8bdf14c5c';
 const STORE_KEY = 'gazon_admin_pwd';
@@ -17,20 +23,30 @@ interface Lead {
   service: string;
   comment: string;
   mail_sent: boolean;
+  status: LeadStatusValue;
 }
 
+type Counts = Record<string, number>;
+
 const Leads = () => {
+  const { toast } = useToast();
   const [password, setPassword] = useState('');
   const [authed, setAuthed] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [counts, setCounts] = useState<Counts>({});
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<'all' | LeadStatusValue>('all');
   const [loading, setLoading] = useState(false);
+  const [savingId, setSavingId] = useState<number | null>(null);
 
-  const load = async (pwd: string, phone = '') => {
+  const load = async (pwd: string, phone = '', status: 'all' | LeadStatusValue = 'all') => {
     setLoading(true);
     try {
-      const url = phone ? `${LEADS_URL}?phone=${encodeURIComponent(phone)}` : LEADS_URL;
+      const q = new URLSearchParams();
+      if (phone) q.set('phone', phone);
+      if (status !== 'all') q.set('status', status);
+      const url = q.toString() ? `${LEADS_URL}?${q}` : LEADS_URL;
       const res = await fetch(url, { headers: { 'X-Admin-Password': pwd } });
       if (res.status === 401) {
         setAuthed(false);
@@ -40,6 +56,7 @@ const Leads = () => {
       }
       const data = await res.json();
       setLeads(data.leads || []);
+      setCounts(data.counts || {});
       setAuthed(true);
       setLoginError('');
       localStorage.setItem(STORE_KEY, pwd);
@@ -58,6 +75,38 @@ const Leads = () => {
     }
   }, []);
 
+  const changeStatus = async (lead: Lead, status: LeadStatusValue) => {
+    const prev = lead.status;
+    setSavingId(lead.id);
+    setLeads((list) => list.map((l) => (l.id === lead.id ? { ...l, status } : l)));
+    setCounts((c) => ({
+      ...c,
+      [prev]: Math.max(0, (c[prev] || 1) - 1),
+      [status]: (c[status] || 0) + 1,
+    }));
+    try {
+      const res = await fetch(LEADS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': password },
+        body: JSON.stringify({ id: lead.id, status }),
+      });
+      if (!res.ok) throw new Error('fail');
+      if (filter !== 'all' && filter !== status) {
+        setLeads((list) => list.filter((l) => l.id !== lead.id));
+      }
+    } catch {
+      setLeads((list) => list.map((l) => (l.id === lead.id ? { ...l, status: prev } : l)));
+      toast({ variant: 'destructive', title: 'Не удалось сохранить статус' });
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const applyFilter = (status: 'all' | LeadStatusValue) => {
+    setFilter(status);
+    load(password, search, status);
+  };
+
   const onLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!password.trim()) return;
@@ -66,7 +115,7 @@ const Leads = () => {
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    load(password, search);
+    load(password, search, filter);
   };
 
   const logout = () => {
@@ -115,17 +164,46 @@ const Leads = () => {
     );
   }
 
+  const tabs: { value: 'all' | LeadStatusValue; label: string }[] = [
+    { value: 'all', label: 'Все' },
+    ...STATUS_LIST.map((s) => ({ value: s.value, label: s.label })),
+  ];
+
   return (
     <div className="min-h-screen bg-muted px-4 py-8 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-2xl sm:text-3xl">Заявки с сайта</h1>
-            <p className="text-sm text-muted-foreground">Всего показано: {leads.length}</p>
+            <p className="text-sm text-muted-foreground">Показано: {leads.length}</p>
           </div>
           <Button variant="outline" onClick={logout} className="rounded-lg">
             <Icon name="LogOut" size={16} className="mr-2" /> Выйти
           </Button>
+        </div>
+
+        <div className="mb-5 flex flex-wrap gap-2">
+          {tabs.map((t) => {
+            const active = filter === t.value;
+            const count = counts[t.value] ?? 0;
+            return (
+              <button
+                key={t.value}
+                type="button"
+                onClick={() => applyFilter(t.value)}
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                  active
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border bg-white text-foreground hover:border-primary hover:text-primary'
+                }`}
+              >
+                {t.label}
+                <span className={active ? 'ml-2 opacity-80' : 'ml-2 text-muted-foreground'}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         <form onSubmit={onSearch} className="mb-5 flex flex-wrap gap-3">
@@ -146,7 +224,7 @@ const Leads = () => {
               className="h-12 rounded-lg"
               onClick={() => {
                 setSearch('');
-                load(password, '');
+                load(password, '', filter);
               }}
             >
               Сбросить
@@ -163,8 +241,8 @@ const Leads = () => {
           </div>
         )}
 
-        <div className="hidden overflow-hidden rounded-2xl border border-border bg-white lg:block">
-          {leads.length > 0 && (
+        {leads.length > 0 && (
+          <div className="hidden overflow-hidden rounded-2xl border border-border bg-white lg:block">
             <table className="w-full text-left text-sm">
               <thead className="bg-secondary text-secondary-foreground">
                 <tr>
@@ -173,6 +251,7 @@ const Leads = () => {
                   <th className="px-4 py-3 font-display">Телефон</th>
                   <th className="px-4 py-3 font-display">Услуга</th>
                   <th className="px-4 py-3 font-display">Комментарий</th>
+                  <th className="px-4 py-3 font-display">Статус</th>
                 </tr>
               </thead>
               <tbody>
@@ -186,7 +265,10 @@ const Leads = () => {
                       )}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3">
-                      <a href={`tel:${l.phone.replace(/\D/g, '')}`} className="text-primary hover:underline">
+                      <a
+                        href={`tel:${l.phone.replace(/\D/g, '')}`}
+                        className="text-primary hover:underline"
+                      >
                         {l.phone}
                       </a>
                       {l.email && (
@@ -198,12 +280,19 @@ const Leads = () => {
                       {l.car && <span className="block text-xs text-muted-foreground">{l.car}</span>}
                     </td>
                     <td className="max-w-xs px-4 py-3 text-muted-foreground">{l.comment || '—'}</td>
+                    <td className="px-4 py-3">
+                      <StatusPicker
+                        value={l.status}
+                        saving={savingId === l.id}
+                        onChange={(s) => changeStatus(l, s)}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="space-y-3 lg:hidden">
           {leads.map((l) => (
@@ -231,6 +320,13 @@ const Leads = () => {
                 </p>
               )}
               {l.comment && <p className="mt-2 text-sm text-muted-foreground">{l.comment}</p>}
+              <div className="mt-3 border-t border-border pt-3">
+                <StatusPicker
+                  value={l.status}
+                  saving={savingId === l.id}
+                  onChange={(s) => changeStatus(l, s)}
+                />
+              </div>
             </div>
           ))}
         </div>
