@@ -2,6 +2,7 @@ import json
 import os
 import smtplib
 from email.message import EmailMessage
+from email.utils import formataddr
 
 SMTP_HOST = 'smtp.yandex.ru'
 SMTP_PORT = 465
@@ -15,7 +16,7 @@ CORS = {
 
 
 def handler(event: dict, context) -> dict:
-    """Принимает заявку с формы записи на сайте Газ-Он и отправляет её на почту компании."""
+    """Принимает заявку с форм сайта Газ-Он и отправляет её на почту компании ed123ed@yandex.ru."""
     method = event.get('httpMethod', 'GET')
 
     if method == 'OPTIONS':
@@ -43,6 +44,9 @@ def handler(event: dict, context) -> dict:
     car = (body.get('car') or '').strip()
     service = (body.get('service') or '').strip()
     comment = (body.get('comment') or '').strip()
+    company = (body.get('company') or '').strip()
+    email = (body.get('email') or '').strip()
+    fleet = (body.get('fleet') or '').strip()
 
     if not name or not phone:
         return {
@@ -51,34 +55,63 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'success': False, 'error': 'Укажите имя и телефон'}, ensure_ascii=False),
         }
 
-    password = os.environ.get('SMTP_PASSWORD')
+    password = os.environ.get('SMTP_PASSWORD', '').strip()
     if not password:
+        print('SMTP_PASSWORD is not set')
         return {
             'statusCode': 500,
             'headers': CORS,
             'body': json.dumps({'success': False, 'error': 'Почта не настроена'}, ensure_ascii=False),
         }
 
-    lines = [
-        'Новая заявка с сайта Газ-Он',
-        '',
-        f'Имя: {name}',
-        f'Телефон: {phone}',
-        f'Автомобиль: {car or "—"}',
-        f'Услуга: {service or "—"}',
-        f'Комментарий: {comment or "—"}',
-    ]
+    is_business = bool(company or fleet)
+    title = 'Заявка на КП для автопарка' if is_business else 'Новая заявка с сайта Газ-Он'
 
+    lines = [title, '']
+    if company:
+        lines.append(f'Компания: {company}')
+    lines.append(f'Имя: {name}')
+    lines.append(f'Телефон: {phone}')
+    if email:
+        lines.append(f'E-mail: {email}')
+    if fleet:
+        lines.append(f'Размер парка: {fleet}')
+    lines.append(f'Автомобиль: {car or "—"}')
+    lines.append(f'Услуга: {service or "—"}')
+    lines.append(f'Комментарий: {comment or "—"}')
+
+    subject_prefix = 'КП автопарк' if is_business else 'Заявка с сайта'
     msg = EmailMessage()
-    msg['Subject'] = f'Заявка с сайта: {name}, {phone}'
-    msg['From'] = MAIL_FROM
+    msg['Subject'] = f'{subject_prefix}: {company or name}, {phone}'
+    msg['From'] = formataddr(('Сайт Газ-Он', MAIL_FROM))
     msg['To'] = MAIL_TO
+    if email:
+        msg['Reply-To'] = email
     msg.set_content('\n'.join(lines))
 
-    with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=15) as smtp:
-        smtp.login(MAIL_FROM, password)
-        smtp.send_message(msg)
+    try:
+        with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=20) as smtp:
+            smtp.login(MAIL_FROM, password)
+            smtp.send_message(msg)
+    except smtplib.SMTPAuthenticationError as exc:
+        print(f'SMTP auth failed: {exc}')
+        return {
+            'statusCode': 500,
+            'headers': CORS,
+            'body': json.dumps(
+                {'success': False, 'error': 'Почта отклонила пароль. Нужен пароль приложения Яндекса.'},
+                ensure_ascii=False,
+            ),
+        }
+    except Exception as exc:
+        print(f'SMTP send failed: {type(exc).__name__}: {exc}')
+        return {
+            'statusCode': 500,
+            'headers': CORS,
+            'body': json.dumps({'success': False, 'error': 'Не удалось отправить письмо'}, ensure_ascii=False),
+        }
 
+    print(f'Lead sent to {MAIL_TO}: {company or name} / {phone}')
     return {
         'statusCode': 200,
         'headers': CORS,
