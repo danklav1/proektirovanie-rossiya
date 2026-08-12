@@ -35,7 +35,7 @@ const ADVANTAGES = [
 ];
 
 const About = () => (
-  <section id="about" className="relative scroll-mt-20 py-24 sm:py-32">
+  <section id="about" className="relative scroll-mt-20 py-16 sm:py-24 lg:py-32">
     <div className="container px-5 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
         <SectionHeading

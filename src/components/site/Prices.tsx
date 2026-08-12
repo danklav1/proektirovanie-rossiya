@@ -64,7 +64,7 @@ const EXTRA = [
 ];
 
 const Prices = () => (
-  <section id="prices" className="relative scroll-mt-20 py-24 sm:py-32">
+  <section id="prices" className="relative scroll-mt-20 py-16 sm:py-24 lg:py-32">
     <div className="container px-5 sm:px-8">
       <SectionHeading
         eyebrow="Цены"
@@ -103,7 +103,7 @@ const Prices = () => (
             </p>
 
             <div className="mt-8 flex items-end gap-3">
-              <span className="font-display text-5xl leading-none">{p.price}</span>
+              <span className="font-display text-4xl leading-none sm:text-5xl">{p.price}</span>
               <span className="pb-1 font-display text-2xl">₽</span>
               {p.old && (
                 <span

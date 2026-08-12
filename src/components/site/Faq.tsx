@@ -39,7 +39,7 @@ const ITEMS = [
 ];
 
 const Faq = () => (
-  <section id="faq" className="relative scroll-mt-20 py-24 sm:py-32">
+  <section id="faq" className="relative scroll-mt-20 py-16 sm:py-24 lg:py-32">
     <div className="container px-5 sm:px-8">
       <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr]">
         <div>

@@ -67,7 +67,7 @@ const KITS = [
 const Equipment = () => (
   <section
     id="equipment"
-    className="relative scroll-mt-20 border-y border-border bg-secondary/40 py-24 sm:py-32"
+    className="relative scroll-mt-20 border-y border-border bg-secondary/40 py-16 sm:py-24 lg:py-32"
   >
     <div className="container px-5 sm:px-8">
       <SectionHeading
@@ -88,7 +88,7 @@ const Equipment = () => (
             <TabsTrigger
               key={k.key}
               value={k.key}
-              className="border border-border px-5 py-3 font-display text-sm tracking-normal text-muted-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="border border-border px-3 py-2.5 font-display text-xs tracking-normal sm:px-5 sm:py-3 sm:text-sm text-muted-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               {k.brand}
             </TabsTrigger>
@@ -129,7 +129,7 @@ const Equipment = () => (
                 </div>
               </div>
 
-              <div className="relative min-h-[280px] overflow-hidden rounded-xl border border-border bg-white">
+              <div className="relative min-h-[210px] sm:min-h-[280px] overflow-hidden rounded-xl border border-border bg-white">
                 <img
                   src={IMG}
                   alt={`Оборудование ГБО ${k.brand}`}

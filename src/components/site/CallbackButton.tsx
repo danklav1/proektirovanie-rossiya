@@ -87,7 +87,7 @@ const CallbackButton = () => {
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-md rounded-2xl">
+        <DialogContent className="max-h-[90vh] w-[calc(100vw-2rem)] max-w-md overflow-y-auto rounded-2xl p-5 sm:p-6">
           <DialogHeader>
             <DialogTitle className="font-display text-2xl">Обратный звонок</DialogTitle>
             <DialogDescription>

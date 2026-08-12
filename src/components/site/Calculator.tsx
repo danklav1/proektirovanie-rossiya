@@ -36,7 +36,7 @@ const Calculator = () => {
   }, [km, rate]);
 
   return (
-    <section id="calc" className="relative scroll-mt-20 overflow-hidden py-24 sm:py-32">
+    <section id="calc" className="relative scroll-mt-20 overflow-hidden py-16 sm:py-24 lg:py-32">
       <div className="pointer-events-none absolute -right-20 top-0 h-[360px] w-[360px] rounded-full bg-primary/10 blur-[120px]" />
       <div className="container relative px-5 sm:px-8">
         <SectionHeading
@@ -127,22 +127,22 @@ const Calculator = () => {
               <div className="text-[11px] uppercase tracking-[0.24em] opacity-70">
                 Экономия в месяц
               </div>
-              <div className="mt-3 font-display text-6xl leading-none sm:text-7xl">
+              <div className="mt-3 font-display text-4xl leading-none sm:text-6xl lg:text-7xl">
                 {fmt(data.save)} ₽
               </div>
 
               <div className="mt-10 space-y-2">
-                <div className="flex items-center justify-between gap-4 rounded-lg bg-white/12 px-5 py-4">
+                <div className="flex flex-col items-start justify-between gap-1.5 rounded-lg bg-white/12 px-4 py-3.5 sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-4">
                   <span className="text-sm uppercase tracking-[0.14em] opacity-80">За год</span>
                   <span className="font-display text-2xl">{fmt(data.saveYear)} ₽</span>
                 </div>
-                <div className="flex items-center justify-between gap-4 rounded-lg bg-white/12 px-5 py-4">
+                <div className="flex flex-col items-start justify-between gap-1.5 rounded-lg bg-white/12 px-4 py-3.5 sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-4">
                   <span className="text-sm uppercase tracking-[0.14em] opacity-80">
                     Топливо дешевле на
                   </span>
                   <span className="font-display text-2xl">{Math.round(data.percent)}%</span>
                 </div>
-                <div className="flex items-center justify-between gap-4 rounded-lg bg-white/12 px-5 py-4">
+                <div className="flex flex-col items-start justify-between gap-1.5 rounded-lg bg-white/12 px-4 py-3.5 sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-4">
                   <span className="text-sm uppercase tracking-[0.14em] opacity-80">
                     Окупаемость комплекта
                   </span>

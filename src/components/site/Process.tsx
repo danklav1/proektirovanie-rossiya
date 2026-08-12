@@ -40,7 +40,7 @@ const STEPS = [
 ];
 
 const Process = () => (
-  <section id="process" className="relative scroll-mt-20 py-24 sm:py-32">
+  <section id="process" className="relative scroll-mt-20 py-16 sm:py-24 lg:py-32">
     <div className="container px-5 sm:px-8">
       <SectionHeading
         eyebrow="Как проходит"
@@ -58,7 +58,7 @@ const Process = () => (
         {STEPS.map((s) => (
           <article key={s.n} className="group relative rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-7 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_-14px_rgba(16,42,86,0.28)]">
             <div className="flex items-center justify-between">
-              <span className="font-display text-5xl leading-none text-border transition-colors duration-300 group-hover:text-primary">
+              <span className="font-display text-3xl leading-none text-border sm:text-4xl lg:text-5xl transition-colors duration-300 group-hover:text-primary">
                 {s.n}
               </span>
               <Icon name={s.icon} size={22} className="text-primary" />

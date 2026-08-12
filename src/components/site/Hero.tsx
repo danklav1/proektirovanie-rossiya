@@ -48,7 +48,7 @@ const Hero = () => {
               </span>
             </div>
 
-            <h1 className="font-display text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">
+            <h1 className="font-display text-[32px] leading-[1.1] sm:text-5xl lg:text-6xl">
               Установка <span className="text-accent">ГБО</span> нового поколения
             </h1>
 
@@ -77,7 +77,7 @@ const Hero = () => {
               </Button>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/15 pt-8 sm:grid-cols-4">
+            <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-white/15 pt-8 sm:grid-cols-4 sm:gap-x-6 sm:gap-y-6">
               {STATS.map((s) => (
                 <div key={s.label}>
                   <div className="font-display text-3xl leading-none text-accent">{s.value}</div>

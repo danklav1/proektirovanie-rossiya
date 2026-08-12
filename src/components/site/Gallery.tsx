@@ -124,7 +124,7 @@ const Gallery = () => {
   };
 
   return (
-    <section id="works" className="relative scroll-mt-20 py-24 sm:py-32">
+    <section id="works" className="relative scroll-mt-20 py-16 sm:py-24 lg:py-32">
       <div className="container px-5 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <SectionHeading
@@ -222,7 +222,7 @@ const Gallery = () => {
             </div>
           </div>
 
-          <div className="flex flex-col rounded-xl border border-border bg-white p-8 shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] sm:p-10">
+          <div className="flex flex-col rounded-xl border border-border bg-white p-6 shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] sm:p-8 lg:p-10">
             <div className="text-sm text-muted-foreground">
               Работа {Math.min(i, list.length - 1) + 1} из {list.length}
             </div>

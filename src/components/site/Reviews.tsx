@@ -29,7 +29,7 @@ const REVIEWS = [
 ];
 
 const Reviews = () => (
-  <section className="relative border-y border-border bg-secondary/40 py-24 sm:py-32">
+  <section className="relative border-y border-border bg-secondary/40 py-16 sm:py-24 lg:py-32">
     <div className="container px-5 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
         <SectionHeading

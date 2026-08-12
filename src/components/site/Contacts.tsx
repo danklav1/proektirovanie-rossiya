@@ -101,7 +101,7 @@ const Contacts = () => {
   return (
     <section
       id="contacts"
-      className="relative scroll-mt-20 overflow-hidden border-t border-border bg-secondary/40 py-24 sm:py-32"
+      className="relative scroll-mt-20 overflow-hidden border-t border-border bg-secondary/40 py-16 sm:py-24 lg:py-32"
     >
       <div className="pointer-events-none absolute -left-24 bottom-0 h-[400px] w-[400px] rounded-full bg-primary/10 blur-[130px]" />
       <div className="container relative px-5 sm:px-8">

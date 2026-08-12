@@ -11,6 +11,7 @@ const NAV = [
   { id: 'equipment', label: 'Оборудование' },
   { id: 'works', label: 'Наши работы' },
   { id: 'prices', label: 'Цены' },
+  { id: 'business', label: 'Бизнесу' },
   { id: 'faq', label: 'Вопросы' },
   { id: 'contacts', label: 'Контакты' },
 ];

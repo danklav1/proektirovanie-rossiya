@@ -93,7 +93,7 @@ const FuelPrices = () => {
   return (
     <section
       id="fuel"
-      className="relative scroll-mt-20 overflow-hidden border-y border-border bg-secondary/40 py-24 sm:py-32"
+      className="relative scroll-mt-20 overflow-hidden border-y border-border bg-secondary/40 py-16 sm:py-24 lg:py-32"
     >
       <div className="pointer-events-none absolute -left-24 top-10 h-[360px] w-[360px] rounded-full bg-primary/10 blur-[120px]" />
       <div className="container relative px-5 sm:px-8">
