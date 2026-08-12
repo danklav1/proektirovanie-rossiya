@@ -9,6 +9,7 @@ import Reviews from '@/components/site/Reviews';
 import Faq from '@/components/site/Faq';
 import Contacts from '@/components/site/Contacts';
 import Footer from '@/components/site/Footer';
+import CallbackButton from '@/components/site/CallbackButton';
 
 const Index = () => {
   return (
@@ -26,6 +27,7 @@ const Index = () => {
         <Contacts />
       </main>
       <Footer />
+      <CallbackButton />
     </div>
   );
 };
