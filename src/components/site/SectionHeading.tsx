@@ -10,10 +10,11 @@ const SectionHeading = ({ eyebrow, title, description, align = 'left' }: Props) 
     <div
       className={`flex items-center gap-3 ${align === 'center' ? 'justify-center' : ''}`}
     >
-      <span className="h-px w-8 bg-primary" />
-      <span className="text-[11px] uppercase tracking-[0.26em] text-primary">{eyebrow}</span>
+      <span className="rounded-full bg-secondary px-3.5 py-1.5 text-[11px] uppercase tracking-[0.18em] text-primary">
+        {eyebrow}
+      </span>
     </div>
-    <h2 className="mt-5 font-display text-4xl uppercase leading-[0.95] tracking-tight sm:text-5xl">
+    <h2 className="mt-5 font-display text-3xl leading-[1.12] sm:text-[2.6rem]">
       {title}
     </h2>
     {description && (

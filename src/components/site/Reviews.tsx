@@ -29,7 +29,7 @@ const REVIEWS = [
 ];
 
 const Reviews = () => (
-  <section className="relative border-y border-border bg-card/40 py-24 sm:py-32">
+  <section className="relative border-y border-border bg-secondary/40 py-24 sm:py-32">
     <div className="container px-5 sm:px-8">
       <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
         <SectionHeading
@@ -58,9 +58,9 @@ const Reviews = () => (
         </div>
       </div>
 
-      <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
+      <div className="mt-14 grid gap-5 sm:grid-cols-2">
         {REVIEWS.map((r) => (
-          <article key={r.name} className="group bg-background p-8 transition-colors hover:bg-card">
+          <article key={r.name} className="group rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-8 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_-14px_rgba(16,42,86,0.28)]">
             <Icon name="Quote" size={26} className="text-primary/40" />
             <p className="mt-5 text-base leading-relaxed text-foreground/90">{r.text}</p>
             <div className="mt-7 flex items-center gap-4 border-t border-border pt-6">

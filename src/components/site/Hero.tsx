@@ -18,58 +18,51 @@ const STATS = [
   { value: '19 000+', label: 'машин на газу' },
 ];
 
+const BADGES = [
+  { icon: 'PiggyBank', value: 'до 165 000 ₽', text: 'экономии в год' },
+  { icon: 'CalendarCheck', value: 'от 4 месяцев', text: 'окупаемость ГБО' },
+  { icon: 'Clock', value: 'от 5 часов', text: 'на установку' },
+];
+
 const Hero = () => {
   return (
-    <section className="relative grain overflow-hidden pt-[76px]">
-      <div className="pointer-events-none absolute inset-0 grid-lines opacity-40" />
-      <div className="pointer-events-none absolute -left-40 top-10 h-[520px] w-[520px] rounded-full bg-primary/10 blur-[130px] animate-glow-pulse" />
-      <div className="pointer-events-none absolute -right-32 bottom-0 h-[420px] w-[420px] rounded-full bg-accent/10 blur-[120px]" />
+    <section className="relative">
+      <div className="relative overflow-hidden pt-[76px]">
+        <img
+          src={HERO_IMG}
+          alt="Установка ГБО в центре Газ-Он"
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1a2fF2] via-[#0b1a2fD9] to-[#0b1a2f99]" />
 
-      <div className="container relative px-5 pb-20 pt-14 sm:px-8 lg:pb-28 lg:pt-20">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="stagger">
-            <div
-              className="mb-7 inline-flex items-center gap-2.5 border border-primary/40 bg-primary/10 px-4 py-2"
-              style={{ animationDelay: '0ms' }}
-            >
+        <div className="container relative px-5 pb-24 pt-14 sm:px-8 lg:pb-32 lg:pt-20">
+          <div className="max-w-2xl text-white">
+            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-white/10 px-4 py-2 backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
-              <span className="text-[11px] uppercase tracking-[0.22em] text-primary">
+              <span className="text-[11px] uppercase tracking-[0.18em] text-white/85">
                 Федеральная сеть · 38 городов
               </span>
             </div>
 
-            <h1
-              className="font-display text-[13vw] font-bold uppercase leading-[0.88] tracking-[-0.01em] sm:text-[8.5vw] lg:text-[5.6rem]"
-              style={{ animationDelay: '80ms' }}
-            >
-              Бензин
-              <br />
-              <span className="relative inline-block">
-                <span className="text-muted-foreground/45 line-through decoration-accent decoration-[6px]">
-                  дорожает
-                </span>
-              </span>
-              <br />
-              <span className="text-primary">вы — нет</span>
+            <h1 className="font-display text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">
+              Установка <span className="text-accent">ГБО</span> нового поколения
             </h1>
 
-            <p
-              className="mt-7 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg"
-              style={{ animationDelay: '160ms' }}
-            >
-              «Газ-Он» — сеть центров установки ГБО нового поколения. Итальянское оборудование
-              5-го&nbsp;поколения, установка за один день и официальная регистрация в ГИБДД под ключ.
-              Расход в деньгах падает вдвое уже в день выезда из бокса.
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+              «Газ-Он» — сеть центров установки газового оборудования. Итальянские комплекты,
+              монтаж за один день и официальная регистрация в ГИБДД под ключ. Расходы на топливо
+              падают вдвое уже в день выезда из бокса.
             </p>
 
-            <div className="mt-9 flex flex-wrap gap-3" style={{ animationDelay: '240ms' }}>
+            <div className="mt-8 flex flex-wrap gap-3">
               <Button
                 size="lg"
                 onClick={() => scrollTo('contacts')}
-                className="h-14 px-8 font-display text-base uppercase tracking-[0.12em]"
+                className="h-14 rounded-lg px-8 font-display text-base tracking-normal shadow-[0_14px_34px_-12px_rgba(4,96,205,0.9)]"
               >
                 Записаться на установку
               </Button>
@@ -77,58 +70,45 @@ const Hero = () => {
                 size="lg"
                 variant="outline"
                 onClick={() => scrollTo('calc')}
-                className="h-14 px-8 font-display text-base uppercase tracking-[0.12em] border-border hover:border-primary hover:text-primary"
+                className="h-14 rounded-lg border-white/40 bg-white/5 px-8 font-display text-base tracking-normal text-white backdrop-blur-sm hover:bg-white hover:text-primary"
               >
                 <Icon name="Calculator" size={18} className="mr-2" />
                 Рассчитать выгоду
               </Button>
             </div>
 
-            <div
-              className="mt-12 grid grid-cols-2 gap-x-6 gap-y-7 border-t border-border pt-8 sm:grid-cols-4"
-              style={{ animationDelay: '320ms' }}
-            >
+            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/15 pt-8 sm:grid-cols-4">
               {STATS.map((s) => (
                 <div key={s.label}>
-                  <div className="font-display text-3xl leading-none text-primary">{s.value}</div>
-                  <div className="mt-2 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-                    {s.label}
-                  </div>
+                  <div className="font-display text-3xl leading-none text-accent">{s.value}</div>
+                  <div className="mt-2 text-xs leading-snug text-white/70">{s.label}</div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          <div className="relative animate-scale-in" style={{ animationDelay: '200ms' }}>
-            <div className="absolute -inset-3 hatch opacity-70" />
-            <div className="relative overflow-hidden border border-border">
-              <img
-                src={HERO_IMG}
-                alt="Установка ГБО в центре Газ-Он"
-                className="h-[380px] w-full object-cover sm:h-[520px] lg:h-[620px]"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 flex flex-wrap items-end justify-between gap-4 p-6">
-                <div>
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-primary">
-                    Экономия на 100 км
-                  </div>
-                  <div className="font-display text-5xl leading-none">до 55%</div>
-                </div>
-                <div className="border border-primary/40 bg-background/70 px-4 py-2.5 backdrop-blur-sm">
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                    Окупаемость
-                  </div>
-                  <div className="font-display text-xl text-foreground">4–7 месяцев</div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="relative overflow-hidden border-y border-border bg-card/40 py-3.5">
+      <div className="container relative z-10 -mt-12 px-5 sm:px-8">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {BADGES.map((b) => (
+            <div
+              key={b.value}
+              className="flex items-center gap-4 rounded-xl border border-border bg-white p-5 shadow-[0_12px_34px_-14px_rgba(16,42,86,0.35)]"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <Icon name={b.icon} size={22} />
+              </span>
+              <div>
+                <div className="font-display text-lg leading-none text-primary">{b.value}</div>
+                <div className="mt-1.5 text-sm text-muted-foreground">{b.text}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative mt-16 overflow-hidden border-y border-border bg-secondary py-3.5">
         <div className="marquee-track flex w-max gap-10 whitespace-nowrap">
           {[0, 1].map((k) => (
             <div key={k} className="flex gap-10">
@@ -144,7 +124,7 @@ const Hero = () => {
               ].map((t) => (
                 <span
                   key={t + k}
-                  className="flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-muted-foreground"
+                  className="flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-muted-foreground"
                 >
                   <Icon name="Hexagon" size={12} className="text-primary" />
                   {t}

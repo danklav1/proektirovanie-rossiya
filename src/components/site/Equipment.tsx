@@ -67,7 +67,7 @@ const KITS = [
 const Equipment = () => (
   <section
     id="equipment"
-    className="relative scroll-mt-20 border-y border-border bg-card/40 py-24 sm:py-32"
+    className="relative scroll-mt-20 border-y border-border bg-secondary/40 py-24 sm:py-32"
   >
     <div className="container px-5 sm:px-8">
       <SectionHeading
@@ -88,7 +88,7 @@ const Equipment = () => (
             <TabsTrigger
               key={k.key}
               value={k.key}
-              className="border border-border px-5 py-3 font-display text-sm uppercase tracking-[0.12em] text-muted-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="border border-border px-5 py-3 font-display text-sm tracking-normal text-muted-foreground data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               {k.brand}
             </TabsTrigger>
@@ -97,17 +97,17 @@ const Equipment = () => (
 
         {KITS.map((k) => (
           <TabsContent key={k.key} value={k.key} className="mt-10 animate-fade-in">
-            <div className="grid gap-px border border-border bg-border lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="bg-background p-8 sm:p-10">
+            <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-8 sm:p-10">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="border border-primary/40 bg-primary/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-primary">
+                  <span className="rounded-full bg-primary px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-primary-foreground">
                     {k.gen}
                   </span>
-                  <span className="border border-border px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  <span className="rounded-full border border-border px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                     {k.country}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-4xl uppercase leading-none">{k.brand}</h3>
+                <h3 className="mt-6 font-display text-4xl leading-none">{k.brand}</h3>
                 <p className="mt-4 text-base leading-relaxed text-muted-foreground">{k.lead}</p>
 
                 <ul className="mt-8 space-y-4">
@@ -123,13 +123,13 @@ const Equipment = () => (
                   <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                     Чаще всего ставим на
                   </div>
-                  <div className="mt-2 font-display text-lg uppercase tracking-wide text-foreground">
+                  <div className="mt-2 font-display text-lg tracking-wide text-foreground">
                     {k.fit}
                   </div>
                 </div>
               </div>
 
-              <div className="relative min-h-[280px] overflow-hidden bg-background">
+              <div className="relative min-h-[280px] overflow-hidden rounded-xl border border-border bg-white">
                 <img
                   src={IMG}
                   alt={`Оборудование ГБО ${k.brand}`}

@@ -78,12 +78,14 @@ const Prices = () => (
         description="В стоимость уже входят оборудование, работа, расходники и настройка. Цену фиксируем в заказ-наряде до начала монтажа."
       />
 
-      <div className="mt-16 grid gap-px border border-border bg-border lg:grid-cols-3">
+      <div className="mt-16 grid gap-5 lg:grid-cols-3">
         {PLANS.map((p) => (
           <article
             key={p.name}
-            className={`relative flex flex-col p-8 sm:p-10 ${
-              p.accent ? 'bg-primary text-primary-foreground' : 'bg-background'
+            className={`relative flex flex-col rounded-2xl p-8 sm:p-10 ${
+              p.accent
+                ? 'bg-primary text-primary-foreground shadow-[0_24px_50px_-18px_rgba(4,96,205,0.6)]'
+                : 'border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)]'
             }`}
           >
             {p.accent && (
@@ -91,7 +93,7 @@ const Prices = () => (
                 Хит
               </span>
             )}
-            <h3 className="font-display text-2xl uppercase tracking-wide">{p.name}</h3>
+            <h3 className="font-display text-2xl tracking-wide">{p.name}</h3>
             <p
               className={`mt-3 text-sm leading-relaxed ${
                 p.accent ? 'opacity-80' : 'text-muted-foreground'
@@ -131,7 +133,7 @@ const Prices = () => (
               onClick={() => scrollTo('contacts')}
               variant={p.accent ? 'secondary' : 'outline'}
               size="lg"
-              className={`mt-9 h-14 w-full font-display uppercase tracking-[0.12em] ${
+              className={`mt-9 h-14 w-full rounded-lg font-display tracking-normal ${
                 p.accent ? '' : 'border-border hover:border-primary hover:text-primary'
               }`}
             >
@@ -141,14 +143,14 @@ const Prices = () => (
         ))}
       </div>
 
-      <div className="mt-14 grid gap-px border border-border bg-border sm:grid-cols-2">
+      <div className="mt-14 grid gap-5 sm:grid-cols-2">
         {EXTRA.map((e) => (
           <div
             key={e.label}
-            className="flex items-center justify-between gap-6 bg-background px-6 py-5 transition-colors hover:bg-card"
+            className="flex items-center justify-between gap-6 rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] px-6 py-5 transition-colors hover:bg-secondary"
           >
             <span className="text-sm text-muted-foreground">{e.label}</span>
-            <span className="shrink-0 font-display text-lg uppercase tracking-wide text-primary">
+            <span className="shrink-0 font-display text-lg tracking-wide text-primary">
               {e.price}
             </span>
           </div>

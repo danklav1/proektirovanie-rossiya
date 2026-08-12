@@ -54,19 +54,19 @@ const Process = () => (
         description="Пять шагов, за которые машина переезжает на газ. Каждый этап фиксируем в заказ-наряде — вы всегда видите, что уже сделано."
       />
 
-      <div className="mt-16 grid gap-px border border-border bg-border md:grid-cols-2 lg:grid-cols-5">
+      <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
         {STEPS.map((s) => (
-          <article key={s.n} className="group relative bg-background p-7 transition-colors hover:bg-card">
+          <article key={s.n} className="group relative rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-7 transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_-14px_rgba(16,42,86,0.28)]">
             <div className="flex items-center justify-between">
               <span className="font-display text-5xl leading-none text-border transition-colors duration-300 group-hover:text-primary">
                 {s.n}
               </span>
               <Icon name={s.icon} size={22} className="text-primary" />
             </div>
-            <div className="mt-6 inline-block border border-border px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            <div className="mt-6 inline-block rounded-full bg-secondary px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-primary">
               {s.time}
             </div>
-            <h3 className="mt-4 font-display text-lg uppercase leading-tight tracking-wide">
+            <h3 className="mt-4 font-display text-lg leading-tight tracking-wide">
               {s.title}
             </h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.text}</p>

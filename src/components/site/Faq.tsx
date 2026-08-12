@@ -66,7 +66,7 @@ const Faq = () => (
         <Accordion type="single" collapsible className="w-full border-t border-border">
           {ITEMS.map((item, i) => (
             <AccordionItem key={item.q} value={`i${i}`} className="border-b border-border">
-              <AccordionTrigger className="py-6 text-left font-display text-lg uppercase leading-snug tracking-wide hover:text-primary hover:no-underline">
+              <AccordionTrigger className="py-6 text-left font-display text-lg leading-snug tracking-wide hover:text-primary hover:no-underline">
                 {item.q}
               </AccordionTrigger>
               <AccordionContent className="pb-6 text-base leading-relaxed text-muted-foreground">

@@ -84,12 +84,12 @@ const Contacts = () => {
   return (
     <section
       id="contacts"
-      className="relative scroll-mt-20 overflow-hidden border-t border-border bg-card/40 py-24 sm:py-32"
+      className="relative scroll-mt-20 overflow-hidden border-t border-border bg-secondary/40 py-24 sm:py-32"
     >
       <div className="pointer-events-none absolute -left-24 bottom-0 h-[400px] w-[400px] rounded-full bg-primary/10 blur-[130px]" />
       <div className="container relative px-5 sm:px-8">
-        <div className="grid gap-px border border-border bg-border lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="bg-background p-8 sm:p-10">
+        <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-8 sm:p-10">
             <SectionHeading
               eyebrow="Запись"
               title={
@@ -112,7 +112,7 @@ const Contacts = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Александр"
-                    className="h-12 rounded-none border-border bg-card"
+                    className="h-12 rounded-lg border-border bg-white"
                   />
                   {errors.name && (
                     <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
@@ -129,7 +129,7 @@ const Contacts = () => {
                     onChange={(e) => setPhone(formatPhone(e.target.value))}
                     placeholder="8 (900) 000-00-00"
                     inputMode="tel"
-                    className="h-12 rounded-none border-border bg-card"
+                    className="h-12 rounded-lg border-border bg-white"
                   />
                   {errors.phone && (
                     <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
@@ -148,7 +148,7 @@ const Contacts = () => {
                     value={car}
                     onChange={(e) => setCar(e.target.value)}
                     placeholder="Kia Rio 1.6, 2019"
-                    className="h-12 rounded-none border-border bg-card"
+                    className="h-12 rounded-lg border-border bg-white"
                   />
                   {errors.car && (
                     <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
@@ -161,7 +161,7 @@ const Contacts = () => {
                     Услуга
                   </label>
                   <Select value={service} onValueChange={setService}>
-                    <SelectTrigger className="h-12 rounded-none border-border bg-card">
+                    <SelectTrigger className="h-12 rounded-lg border-border bg-white">
                       <SelectValue placeholder="Выберите услугу" />
                     </SelectTrigger>
                     <SelectContent>
@@ -189,7 +189,7 @@ const Contacts = () => {
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Пробег, тип впрыска, удобное время для звонка"
                   rows={3}
-                  className="rounded-none border-border bg-card resize-none"
+                  className="rounded-lg border-border bg-white resize-none"
                 />
               </div>
 
@@ -197,7 +197,7 @@ const Contacts = () => {
                 type="submit"
                 size="lg"
                 disabled={sending}
-                className="h-14 w-full font-display text-base uppercase tracking-[0.12em]"
+                className="h-14 w-full rounded-lg font-display text-base tracking-normal"
               >
                 {sending ? 'Отправляем…' : 'Записаться на диагностику'}
               </Button>
@@ -209,25 +209,25 @@ const Contacts = () => {
             </form>
           </div>
 
-          <div className="bg-background p-8 sm:p-10">
+          <div className="rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-8 sm:p-10">
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-primary" />
               <span className="text-[11px] uppercase tracking-[0.26em] text-primary">Центры</span>
             </div>
-            <h3 className="mt-5 font-display text-3xl uppercase leading-none">
+            <h3 className="mt-5 font-display text-3xl leading-none">
               Где нас найти
             </h3>
 
-            <div className="mt-8 space-y-px bg-border">
+            <div className="mt-8 space-y-3">
               {CITIES.map((c) => (
                 <div
                   key={c.city}
-                  className="group bg-background py-5 transition-colors hover:bg-card"
+                  className="group rounded-xl border border-border bg-white p-4 transition-colors hover:border-primary/40 hover:bg-secondary"
                 >
                   <div className="flex items-start gap-4 px-1">
                     <Icon name="MapPin" size={18} className="mt-1 shrink-0 text-primary" />
                     <div>
-                      <div className="font-display text-lg uppercase tracking-wide">{c.city}</div>
+                      <div className="font-display text-lg tracking-wide">{c.city}</div>
                       <div className="mt-1 text-sm text-muted-foreground">{c.address}</div>
                       <div className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground/70">
                         {c.hours}
@@ -238,13 +238,13 @@ const Contacts = () => {
               ))}
             </div>
 
-            <div className="mt-8 border border-border p-6">
-              <div className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+            <div className="mt-8 rounded-xl bg-primary p-6 text-primary-foreground">
+              <div className="text-[11px] uppercase tracking-[0.16em] text-primary-foreground/70">
                 Единый номер сети
               </div>
               <a
                 href="tel:+79080048080"
-                className="mt-2 block font-display text-3xl tracking-wide text-primary transition-opacity hover:opacity-80"
+                className="mt-2 block font-display text-3xl transition-opacity hover:opacity-80"
               >
                 8 (908) 004-80-80
               </a>
@@ -253,13 +253,13 @@ const Contacts = () => {
                   href="https://wa.me/79080048080"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2 border border-border px-4 py-2.5 text-sm transition-colors hover:border-primary hover:text-primary"
+                  className="flex items-center gap-2 rounded-lg bg-white/15 px-4 py-2.5 text-sm transition-colors hover:bg-white hover:text-primary"
                 >
                   <Icon name="MessageCircle" size={16} /> WhatsApp
                 </a>
                 <a
                   href="mailto:zayavka@gaz-on.ru"
-                  className="flex items-center gap-2 border border-border px-4 py-2.5 text-sm transition-colors hover:border-primary hover:text-primary"
+                  className="flex items-center gap-2 rounded-lg bg-white/15 px-4 py-2.5 text-sm transition-colors hover:bg-white hover:text-primary"
                 >
                   <Icon name="Mail" size={16} /> zayavka@gaz-on.ru
                 </a>

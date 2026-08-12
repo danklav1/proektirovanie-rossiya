@@ -64,8 +64,8 @@ export default {
 				}
 			},
 			fontFamily: {
-				display: ['Oswald', 'sans-serif'],
-				sans: ['IBM Plex Sans', 'sans-serif'],
+				display: ['Rubik', 'sans-serif'],
+				sans: ['Open Sans', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

@@ -4,35 +4,35 @@
 
 @layer base {
   :root {
-    --background: 220 18% 7%;
-    --foreground: 60 12% 94%;
+    --background: 0 0% 100%;
+    --foreground: 218 30% 16%;
 
-    --card: 220 16% 11%;
-    --card-foreground: 60 12% 94%;
+    --card: 210 40% 98%;
+    --card-foreground: 218 30% 16%;
 
-    --popover: 220 16% 11%;
-    --popover-foreground: 60 12% 94%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 218 30% 16%;
 
-    --primary: 78 88% 52%;
-    --primary-foreground: 220 30% 8%;
+    --primary: 213 96% 41%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 16%;
-    --secondary-foreground: 60 12% 94%;
+    --secondary: 212 60% 96%;
+    --secondary-foreground: 213 96% 34%;
 
-    --muted: 220 14% 15%;
-    --muted-foreground: 220 8% 62%;
+    --muted: 210 33% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 24 96% 54%;
-    --accent-foreground: 220 30% 8%;
+    --accent: 42 96% 60%;
+    --accent-foreground: 218 40% 16%;
 
     --destructive: 0 74% 52%;
-    --destructive-foreground: 60 12% 96%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 12% 20%;
-    --input: 220 12% 20%;
-    --ring: 78 88% 52%;
+    --border: 214 28% 89%;
+    --input: 214 28% 89%;
+    --ring: 213 96% 41%;
 
-    --radius: 0.25rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -97,7 +97,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: "Open Sans", sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -110,7 +110,9 @@
   h3,
   h4,
   .font-display {
-    font-family: "Oswald", sans-serif;
+    font-family: "Rubik", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   ::selection {

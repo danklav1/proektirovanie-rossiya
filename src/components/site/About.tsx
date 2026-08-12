@@ -56,16 +56,16 @@ const About = () => (
         </p>
       </div>
 
-      <div className="mt-16 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {ADVANTAGES.map((a) => (
           <article
             key={a.title}
-            className="group relative bg-background p-8 transition-colors duration-300 hover:bg-card"
+            className="group relative rounded-xl border border-border bg-white shadow-[0_4px_24px_-8px_rgba(16,42,86,0.14)] p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-14px_rgba(16,42,86,0.28)]"
           >
-            <div className="flex h-12 w-12 items-center justify-center border border-border text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
               <Icon name={a.icon} size={22} />
             </div>
-            <h3 className="mt-6 font-display text-xl uppercase tracking-wide">{a.title}</h3>
+            <h3 className="mt-6 font-display text-xl tracking-wide">{a.title}</h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{a.text}</p>
           </article>
         ))}
