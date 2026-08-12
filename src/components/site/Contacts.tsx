@@ -45,7 +45,7 @@ const Contacts = () => {
   const validate = () => {
     const e: Record<string, string> = {};
     if (name.trim().length < 2) e.name = 'Укажите, как к вам обращаться';
-    if (!isPhoneComplete(phone)) e.phone = 'Телефон в формате 8 900 000-00-00';
+    if (!isPhoneComplete(phone)) e.phone = 'Введите номер полностью: +7 (900) 000-00-00';
     if (car.trim().length < 3) e.car = 'Марка, модель и объём двигателя';
     if (!service) e.service = 'Выберите услугу';
     setErrors(e);
@@ -132,7 +132,7 @@ const Contacts = () => {
                   <PhoneInput
                     value={phone}
                     onChange={setPhone}
-                    placeholder="8 (900) 000-00-00"
+                    placeholder="+7 (900) 000-00-00"
                     className="h-12 rounded-lg border-border bg-white"
                   />
                   {errors.phone && (

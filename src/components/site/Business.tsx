@@ -84,7 +84,7 @@ const Business = () => {
     const e: Record<string, string> = {};
     if (company.trim().length < 2) e.company = 'Название компании или ИП';
     if (name.trim().length < 2) e.name = 'Укажите контактное лицо';
-    if (!isPhoneComplete(phone)) e.phone = 'Телефон в формате 8 900 000-00-00';
+    if (!isPhoneComplete(phone)) e.phone = 'Введите номер полностью: +7 (900) 000-00-00';
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = 'Проверьте адрес почты';
     setErrors(e);
     if (Object.keys(e).length) return;
@@ -321,7 +321,7 @@ const Business = () => {
                   <PhoneInput
                     value={phone}
                     onChange={setPhone}
-                    placeholder="8 (900) 000-00-00"
+                    placeholder="+7 (900) 000-00-00"
                     className="h-12 rounded-lg border-border bg-white"
                   />
                   {errors.phone && (
