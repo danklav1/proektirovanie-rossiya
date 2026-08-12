@@ -1,0 +1,1 @@
+UPDATE bookings SET status = 'declined' WHERE name = 'Тест записи' AND phone = '+7 (900) 777-88-99';

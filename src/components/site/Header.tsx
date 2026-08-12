@@ -12,8 +12,17 @@ const NAV = [
   { id: 'works', label: 'Наши работы' },
   { id: 'prices', label: 'Цены' },
   { id: 'business', label: 'Бизнесу' },
-  { id: 'faq', label: 'Вопросы' },
+  { id: 'reviews', label: 'Отзывы' },
+  { id: 'booking', label: 'Запись' },
   { id: 'contacts', label: 'Контакты' },
+];
+
+const MOBILE_NAV = [
+  { id: 'process', label: 'Установка ГБО', icon: 'Wrench', hint: 'Как проходит и что входит' },
+  { id: 'prices', label: 'Цены', icon: 'Tag', hint: 'Стоимость комплектов' },
+  { id: 'works', label: 'Наши работы', icon: 'Images', hint: 'Фото из боксов сети' },
+  { id: 'reviews', label: 'Отзывы', icon: 'Star', hint: '4.9 из 5 · 2 400+ отзывов' },
+  { id: 'booking', label: 'Запись', icon: 'CalendarDays', hint: 'Онлайн на 14 дней вперёд' },
 ];
 
 const Header = () => {
@@ -87,7 +96,7 @@ const Header = () => {
             8 (908) 004-80-80
           </a>
           <Button
-            onClick={() => go('contacts')}
+            onClick={() => go('booking')}
             className="hidden rounded-lg font-display tracking-normal sm:inline-flex"
           >
             Записаться
@@ -100,24 +109,58 @@ const Header = () => {
                 <Icon name="Menu" size={20} />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] border-border bg-white">
-              <div className="mt-10 flex flex-col gap-1">
-                {NAV.map((n) => (
+            <SheetContent
+              side="right"
+              className="flex w-[88vw] max-w-[400px] flex-col gap-0 overflow-y-auto border-border bg-white p-0"
+            >
+              <div className="flex items-center gap-3 border-b border-border px-5 py-5">
+                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <Icon name="Flame" size={22} strokeWidth={2.4} />
+                </span>
+                <span className="leading-none">
+                  <span className="block font-display text-2xl">
+                    Газ<span className="text-accent">-</span>Он
+                  </span>
+                  <span className="mt-1.5 block text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    ГБО нового поколения
+                  </span>
+                </span>
+              </div>
+
+              <nav className="flex flex-col gap-2 px-5 py-5">
+                {MOBILE_NAV.map((n) => (
                   <button
                     key={n.id}
                     onClick={() => go(n.id)}
-                    className="border-b border-border/70 py-3.5 text-left font-display text-lg text-foreground transition-colors hover:text-primary"
+                    className="flex items-center gap-4 rounded-xl border border-border bg-white px-4 py-3.5 text-left transition-colors active:bg-secondary"
                   >
-                    {n.label}
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon name={n.icon} size={20} />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-display text-lg leading-tight">{n.label}</span>
+                      <span className="mt-0.5 block text-xs text-muted-foreground">{n.hint}</span>
+                    </span>
+                    <Icon
+                      name="ChevronRight"
+                      size={18}
+                      className="ml-auto shrink-0 text-muted-foreground"
+                    />
                   </button>
                 ))}
+              </nav>
+
+              <div className="mt-auto border-t border-border bg-secondary/40 px-5 py-5">
                 <a
                   href="tel:+79080048080"
-                  className="mt-6 flex items-center gap-2 font-display text-xl text-primary"
+                  className="flex h-14 w-full items-center justify-center gap-2.5 rounded-xl bg-primary font-display text-lg text-primary-foreground"
                 >
-                  <Icon name="Phone" size={18} />
+                  <Icon name="Phone" size={20} />
                   8 (908) 004-80-80
                 </a>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  Звоните — мастер ответит и подберёт комплект
+                </p>
               </div>
             </SheetContent>
           </Sheet>

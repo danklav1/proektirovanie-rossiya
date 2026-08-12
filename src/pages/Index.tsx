@@ -10,6 +10,7 @@ import Prices from '@/components/site/Prices';
 import Business from '@/components/site/Business';
 import Reviews from '@/components/site/Reviews';
 import Faq from '@/components/site/Faq';
+import Booking from '@/components/site/Booking';
 import Contacts from '@/components/site/Contacts';
 import Footer from '@/components/site/Footer';
 import CallbackButton from '@/components/site/CallbackButton';
@@ -30,6 +31,7 @@ const Index = () => {
         <Business />
         <Reviews />
         <Faq />
+        <Booking />
         <Contacts />
       </main>
       <Footer />
