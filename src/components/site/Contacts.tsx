@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import PhoneInput, { isPhoneComplete } from '@/components/site/PhoneInput';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
@@ -44,8 +45,7 @@ const Contacts = () => {
   const validate = () => {
     const e: Record<string, string> = {};
     if (name.trim().length < 2) e.name = 'Укажите, как к вам обращаться';
-    const digits = phone.replace(/\D/g, '');
-    if (digits.length < 11) e.phone = 'Телефон в формате 8 900 000-00-00';
+    if (!isPhoneComplete(phone)) e.phone = 'Телефон в формате 8 900 000-00-00';
     if (car.trim().length < 3) e.car = 'Марка, модель и объём двигателя';
     if (!service) e.service = 'Выберите услугу';
     setErrors(e);
@@ -85,18 +85,6 @@ const Contacts = () => {
     }
   };
 
-  const formatPhone = (v: string) => {
-    const d = v.replace(/\D/g, '').slice(0, 11);
-    if (!d) return '';
-    const body = d.length === 11 ? d.slice(1) : d;
-    const p = ['8'];
-    if (body.length) p.push(` (${body.slice(0, 3)}`);
-    if (body.length >= 3) p.push(') ');
-    if (body.length > 3) p.push(body.slice(3, 6));
-    if (body.length > 6) p.push(`-${body.slice(6, 8)}`);
-    if (body.length > 8) p.push(`-${body.slice(8, 10)}`);
-    return p.join('');
-  };
 
   return (
     <section
@@ -141,11 +129,10 @@ const Contacts = () => {
                   <label className="mb-2 block text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                     Телефон
                   </label>
-                  <Input
+                  <PhoneInput
                     value={phone}
-                    onChange={(e) => setPhone(formatPhone(e.target.value))}
+                    onChange={setPhone}
                     placeholder="8 (900) 000-00-00"
-                    inputMode="tel"
                     className="h-12 rounded-lg border-border bg-white"
                   />
                   {errors.phone && (
