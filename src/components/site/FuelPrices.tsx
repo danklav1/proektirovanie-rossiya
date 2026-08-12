@@ -175,7 +175,7 @@ const FuelPrices = () => {
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <h3 className="font-display text-2xl">Как росли цены на топливо</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-muted-foreground text-left font-medium">
                 Средняя цена за литр по России, 2019–2025
               </p>
             </div>
