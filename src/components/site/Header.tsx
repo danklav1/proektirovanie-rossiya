@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const NAV = [
   { id: 'about', label: 'О сети' },
+  { id: 'fuel', label: 'Цены на топливо' },
   { id: 'calc', label: 'Расчёт выгоды' },
   { id: 'process', label: 'Как проходит' },
   { id: 'equipment', label: 'Оборудование' },

@@ -36,7 +36,7 @@ const Calculator = () => {
   }, [km, rate]);
 
   return (
-    <section id="calc" className="relative scroll-mt-20 overflow-hidden border-y border-border bg-secondary/40 py-24 sm:py-32">
+    <section id="calc" className="relative scroll-mt-20 overflow-hidden py-24 sm:py-32">
       <div className="pointer-events-none absolute -right-20 top-0 h-[360px] w-[360px] rounded-full bg-primary/10 blur-[120px]" />
       <div className="container relative px-5 sm:px-8">
         <SectionHeading
